@@ -1,0 +1,52 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // User Validation
+    function isValidUser(data) {
+      return data.uid is string && 
+             data.uid == request.auth.uid &&
+             data.username is string && 
+             data.username.size() <= 32 &&
+             data.level is int &&
+             data.coins is int &&
+             data.xp is int;
+    }
+
+    match /users/{userId} {
+      allow get: if isSignedIn();
+      allow create: if isOwner(userId) && isValidUser(incoming()) && incoming().coins <= 500;
+      allow update: if isOwner(userId) && isValidUser(incoming()) && (
+        incoming().diff(existing()).affectedKeys().hasOnly(['username', 'profileImage', 'level', 'coins', 'xp', 'stats', 'updatedAt'])
+      );
+    }
+
+    match /matches/{matchId} {
+      allow read: if isSignedIn();
+      allow write: if false; // Only system or admin (not implemented yet for users)
+    }
+  }
+}

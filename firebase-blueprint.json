@@ -1,0 +1,64 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile data including level and currency",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "username": { "type": "string" },
+        "level": { "type": "integer" },
+        "coins": { "type": "integer" },
+        "xp": { "type": "integer" },
+        "profileImage": { "type": "string" },
+        "stats": {
+          "type": "object",
+          "properties": {
+            "matchesPlayed": { "type": "integer" },
+            "wins": { "type": "integer" },
+            "runs": { "type": "integer" },
+            "wickets": { "type": "integer" }
+          }
+        },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "username", "level", "coins"]
+    },
+    "Match": {
+      "title": "Match",
+      "description": "Information about a cricket match",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string", "enum": ["QUICK", "MULTIPLAYER", "TOURNAMENT"] },
+        "status": { "type": "string", "enum": ["PENDING", "LIVE", "COMPLETED"] },
+        "teams": {
+          "type": "array",
+          "items": { "type": "object" }
+        },
+        "scorecard": { "type": "object" },
+        "commentary": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "aiPredictions": { "type": "string" },
+        "highlights": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "type", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Authenticated users profiles"
+    },
+    "/matches/{matchId}": {
+      "schema": "Match",
+      "description": "Active and historical matches"
+    }
+  }
+}

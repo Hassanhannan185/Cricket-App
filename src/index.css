@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  
+  --color-primary: #CCFF00;
+  --color-secondary: #00D1FF;
+  --color-background: #05070A;
+}
+
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .glass-card {
+    @apply bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl;
+  }
+  
+  .neon-glow-primary {
+    @apply shadow-[0_0_20px_rgba(204,255,0,0.3)];
+  }
+  
+  .neon-glow-secondary {
+    @apply shadow-[0_0_20px_rgba(0,209,255,0.2)];
+  }
+}
+
+body {
+  background-color: var(--color-background);
+  color: #fff;
+  font-family: var(--font-sans);
+}
+
+h1, h2, h3 {
+  letter-spacing: -0.05em;
+  font-style: italic;
+}

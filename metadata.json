@@ -1,0 +1,6 @@
+{
+  "name": "Cricket Legends AI",
+  "description": "A premium AI-powered cricket gaming platform featuring real-time commentary, smart match simulations, and futuristic esports aesthetics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
